@@ -17,9 +17,9 @@ import java.time.LocalDate;
 @Builder
 public class Registration {
     @Id
-    @Column(name = "registrationId")
+    @Column(name = "registration_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
 
     @Column(name = "person_name")
     private String name;

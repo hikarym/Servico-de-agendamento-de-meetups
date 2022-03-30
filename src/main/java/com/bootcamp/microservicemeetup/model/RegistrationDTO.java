@@ -1,14 +1,10 @@
-package com.bootcamp.microservicemeetup.model.entity;
+package com.bootcamp.microservicemeetup.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
@@ -18,7 +14,7 @@ import java.time.LocalDate;
 @Builder
 public class RegistrationDTO {
 
-    private Long id;
+    private Integer id;
 
     @NotEmpty
     private String name;
