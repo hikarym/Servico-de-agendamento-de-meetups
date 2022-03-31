@@ -13,4 +13,6 @@ public interface RegistrationRepository extends JpaRepository<Registration, Inte
 
 //    @Override
     Optional<Registration> findById(Integer integer);
+
+    Optional<Registration> findByRegistration(String registrationAttribute);
 }
