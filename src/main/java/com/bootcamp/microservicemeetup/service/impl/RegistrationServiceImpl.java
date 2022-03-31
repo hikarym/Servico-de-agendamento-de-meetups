@@ -46,11 +46,11 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public Registration update(Registration registration) {
-        if (repository.existsByRegistration(registration.getRegistration())) {
-            throw new BusinessException("Registration id cannot be null");
+        if (registration == null || registration.getId() == null) {
+            throw new IllegalArgumentException("Registration id cannot be null");
         }
 
-        return repository.save(registration);
+        return this.repository.save(registration);
     }
 
     @Override

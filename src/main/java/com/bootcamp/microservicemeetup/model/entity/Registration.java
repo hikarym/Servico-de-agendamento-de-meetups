@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -25,8 +24,9 @@ public class Registration {
     private String name;
 
     @Column(name = "date_of_registration")
-    private LocalDate dateOfRegistration;
+    private String dateOfRegistration;
 
     @Column
     private String registration;
+
 }

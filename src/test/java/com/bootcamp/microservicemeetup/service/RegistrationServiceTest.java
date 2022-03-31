@@ -18,10 +18,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,10 +54,10 @@ public class RegistrationServiceTest {
 
         Registration savedRegistration = registrationService.save(registration);
         // assert
-        Assertions.assertThat(savedRegistration.getId()).isEqualTo(101);
-        Assertions.assertThat(savedRegistration.getName()).isEqualTo("Mariela Fernandez");
-        Assertions.assertThat(savedRegistration.getDateOfRegistration()).isEqualTo(LocalDate.now());
-        Assertions.assertThat(savedRegistration.getRegistration()).isEqualTo("001");
+        assertThat(savedRegistration.getId()).isEqualTo(101);
+        assertThat(savedRegistration.getName()).isEqualTo("Mariela Fernandez");
+        assertThat(savedRegistration.getDateOfRegistration()).isEqualTo("01/04/2022");
+        assertThat(savedRegistration.getRegistration()).isEqualTo("001");
 
     }
 
@@ -73,6 +73,7 @@ public class RegistrationServiceTest {
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("Registration already created");
 
+        // It means that the method save(registration) must not be called
         Mockito.verify(repository, Mockito.never()).save(registration);
     }
 
@@ -80,13 +81,13 @@ public class RegistrationServiceTest {
     @DisplayName("Should get a registration by Id")
     public void getByRegistrationIdTest() {
 
-        // cenario
+        // scenario
         Integer id = 11;
         Registration registration= createValidRegistration();
         registration.setId(id);
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(registration));
 
-        // execucao
+        // execution
         Optional<Registration> foundRegistration = registrationService.getRegistrationById(id);
 
         //assert
@@ -126,7 +127,20 @@ public class RegistrationServiceTest {
         // caso de retornar vazio
         Mockito.verify(repository, Mockito.times(1)).delete(registration);
 
-        // verificar se item foi removido realmente
+        // verify whether registration was deleted
+    }
+
+    @Test
+    @DisplayName("Should throw error when trying to delete an non-existing registration ")
+    public void deleteInvalidRegistrationTest() {
+
+        // scenario. simulando o cenário de erro
+        Registration registration = new Registration();
+
+        assertThrows(IllegalArgumentException.class, () -> registrationService.delete(registration));
+
+        //
+        Mockito.verify(repository, Mockito.never()).delete(registration);
     }
 
     @Test
@@ -134,18 +148,19 @@ public class RegistrationServiceTest {
     public void updateRegistrationTest() {
 
         // scenario. simulando o cenário de erro
-        Integer id = 11;
+        //Integer id = 11;
         Registration updatingRegistration = Registration.builder().id(11).build();
 
         // execution
         Registration updatedRegistration = createValidRegistration();
-        updatedRegistration.setId(id);
+//        updatedRegistration.setId(id);   necessário ??
 
-        // caso de retornar vazio
+        //
         Mockito.when(repository.save(updatingRegistration)).thenReturn(updatedRegistration);
         Registration registration = registrationService.update(updatingRegistration);
 
         // assert
+//        assertThat(registration).isEqualTo(updatedRegistration);  does it work?
         assertThat(registration.getId()).isEqualTo(updatedRegistration.getId());
         assertThat(registration.getName()).isEqualTo(updatedRegistration.getName());
         assertThat(registration.getDateOfRegistration()).isEqualTo(updatedRegistration.getDateOfRegistration());
@@ -199,7 +214,7 @@ public class RegistrationServiceTest {
         return Registration.builder()
                 .id(101)
                 .name("Mariela Fernandez")
-                .dateOfRegistration(LocalDate.now())
+                .dateOfRegistration("01/04/2022")
                 .registration("001")
                 .build();
     }

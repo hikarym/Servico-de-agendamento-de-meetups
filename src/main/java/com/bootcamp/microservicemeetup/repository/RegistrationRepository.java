@@ -9,9 +9,6 @@ public interface RegistrationRepository extends JpaRepository<Registration, Inte
 
     boolean existsByRegistration(String registration);
 
-//    boolean existsById(String registration);
-
-//    @Override
     Optional<Registration> findById(Integer integer);
 
     Optional<Registration> findByRegistration(String registrationAttribute);
