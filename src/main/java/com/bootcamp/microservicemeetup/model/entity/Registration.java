@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -29,4 +30,16 @@ public class Registration {
     @Column
     private String registration;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Registration that = (Registration) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(dateOfRegistration, that.dateOfRegistration) && Objects.equals(registration, that.registration);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, dateOfRegistration, registration);
+    }
 }

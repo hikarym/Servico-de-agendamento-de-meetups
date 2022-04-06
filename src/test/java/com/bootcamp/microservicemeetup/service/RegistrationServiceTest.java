@@ -148,19 +148,19 @@ public class RegistrationServiceTest {
     public void updateRegistrationTest() {
 
         // scenario. simulando o cenário de erro
-        //Integer id = 11;
+        Integer id = 11;
         Registration updatingRegistration = Registration.builder().id(11).build();
 
         // execution
         Registration updatedRegistration = createValidRegistration();
-//        updatedRegistration.setId(id);   necessário ??
+        updatedRegistration.setId(id);
 
         //
         Mockito.when(repository.save(updatingRegistration)).thenReturn(updatedRegistration);
         Registration registration = registrationService.update(updatingRegistration);
 
         // assert
-//        assertThat(registration).isEqualTo(updatedRegistration);  does it work?
+        // assertThat(registration).isEqualTo(updatedRegistration);
         assertThat(registration.getId()).isEqualTo(updatedRegistration.getId());
         assertThat(registration.getName()).isEqualTo(updatedRegistration.getName());
         assertThat(registration.getDateOfRegistration()).isEqualTo(updatedRegistration.getDateOfRegistration());
