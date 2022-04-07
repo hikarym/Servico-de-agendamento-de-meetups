@@ -293,7 +293,7 @@ public class RegistrationControllerTest {
                 registration.getRegistration(), registration.getDateOfRegistration());
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put(REGISTRATION_API.concat(queryString))
+                .get(REGISTRATION_API.concat(queryString))
                 .accept(MediaType.APPLICATION_JSON);
 
         // verificacao, assert
@@ -305,6 +305,7 @@ public class RegistrationControllerTest {
                 .andExpect(jsonPath("pageable.pageSize").value(100))
                 .andExpect(jsonPath("pageable.pageNumber").value(0));
     }
+
 
     private RegistrationDTO createNewRegistration() {
         return RegistrationDTO.builder()
