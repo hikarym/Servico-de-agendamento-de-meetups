@@ -3,6 +3,7 @@ package com.bootcamp.microservicemeetup.controller;
 import com.bootcamp.microservicemeetup.model.MeetupDTO;
 import com.bootcamp.microservicemeetup.model.entity.Meetup;
 import com.bootcamp.microservicemeetup.model.entity.Registration;
+import com.bootcamp.microservicemeetup.service.MeetupService;
 import com.bootcamp.microservicemeetup.service.RegistrationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,7 @@ public class MeetupControllerTest {
         // quando enviar uma requisicao para esse registration
         // precisa ser encontrado um valor que tem esse usuario
         MeetupDTO dto = MeetupDTO.builder()
-                .registration("123")
+                .registrationAttribute("123")
                 .event("Womakerscode Dados")
                 .build();
         String json = new ObjectMapper().writeValueAsString(dto);

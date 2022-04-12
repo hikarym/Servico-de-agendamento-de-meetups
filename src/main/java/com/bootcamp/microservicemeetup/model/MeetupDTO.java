@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MeetupDTO {
 
-    private String registration;
-    private  String event;
+    private Integer id;
+    private String registrationAttribute;
+    private String event;
+    private RegistrationDTO registration;
 }
