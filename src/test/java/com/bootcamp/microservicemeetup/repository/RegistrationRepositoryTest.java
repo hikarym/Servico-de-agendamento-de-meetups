@@ -29,8 +29,8 @@ public class RegistrationRepositoryTest {
     @DisplayName("Should return true when exists a registration already created")
     public void returnTrueWhenRegistrationExists(){
         String registration = "123";
-        Registration registration_attribute = createNewRegistration(registration);
-        entityManager.persist(registration_attribute);
+        Registration registration_Class_attribute = createNewRegistration(registration);
+        entityManager.persist(registration_Class_attribute);
 
         boolean exists = repository.existsByRegistration(registration);
 
@@ -51,10 +51,10 @@ public class RegistrationRepositoryTest {
     @Test
     @DisplayName("Should get a registration by id")
     public void findByIdTest(){
-        Registration registration_attribute = createNewRegistration("323");
-        entityManager.persist(registration_attribute);
+        Registration registration_Class_attribute = createNewRegistration("323");
+        entityManager.persist(registration_Class_attribute);
 
-        Optional<Registration> foundRegistration = repository.findById(registration_attribute.getId());
+        Optional<Registration> foundRegistration = repository.findById(registration_Class_attribute.getId());
 
         assertThat(foundRegistration.isPresent()).isTrue();
 
@@ -63,10 +63,10 @@ public class RegistrationRepositoryTest {
     @Test
     @DisplayName("Should save registration")
     public void saveRegistrationTest(){
-        Registration registration_attribute = createNewRegistration("323");
+        Registration registration_Class_attribute = createNewRegistration("323");
 
         //simular do que persistiu
-        Registration savedRegistration = repository.save(registration_attribute);
+        Registration savedRegistration = repository.save(registration_Class_attribute);
 
         assertThat(savedRegistration.getId()).isNotNull();
 
@@ -74,20 +74,20 @@ public class RegistrationRepositoryTest {
 
     @DisplayName("Should delete a registration from the BD")
     public void deleteRegistrationTest(){
-        Registration registration_attribute = createNewRegistration("323");
-        entityManager.persist(registration_attribute);
+        Registration registration_Class_attribute = createNewRegistration("323");
+        entityManager.persist(registration_Class_attribute);
 
-        Registration foundRegistration = entityManager.find(Registration.class, registration_attribute.getId());
+        Registration foundRegistration = entityManager.find(Registration.class, registration_Class_attribute.getId());
 
         repository.delete(foundRegistration);
 
-        Registration deleteRegistration = entityManager.find(Registration.class, registration_attribute.getId());
+        Registration deleteRegistration = entityManager.find(Registration.class, registration_Class_attribute.getId());
 
         assertThat(deleteRegistration).isNull();
 
     }
 
-    private Registration createNewRegistration(String registration) {
+    public static Registration createNewRegistration(String registration) {
         return Registration.builder()
                 .name("Mariela Fernandez")
                 .dateOfRegistration("10/10/2021")
