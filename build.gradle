@@ -12,6 +12,10 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+
+	all {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
 }
 
 repositories {
@@ -32,7 +36,10 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.testcontainers:junit-jupiter:1.16.3'
-	testImplementation 'com.h2database:h2:2.1.210'
+//	testImplementation 'com.h2database:h2:2.1.210'
+//	implementation: 'com.h2database:h2:2.1.212'
+	runtimeOnly 'com.h2database:h2'
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 }
 
 dependencyManagement {
