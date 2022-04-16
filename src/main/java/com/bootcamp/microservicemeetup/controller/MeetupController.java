@@ -45,7 +45,7 @@ public class MeetupController {
         return entity.getId();
     }
 
-    @GetMapping
+    @GetMapping("/find-meetup")
     public Page<MeetupDTO> find(MeetupFilterDTO dto, Pageable pageRequest) {
         Page<Meetup> result = meetupService.find(dto, pageRequest);
         List<MeetupDTO> meetups = result
@@ -62,5 +62,12 @@ public class MeetupController {
 
                 }).collect(Collectors.toList());
         return new PageImpl<>(meetups, pageRequest, result.getTotalElements());
+    }
+
+    @GetMapping
+    public List<MeetupDTO> getAll() {
+        List<MeetupDTO> result = meetupService.getAll();
+
+        return result;
     }
 }

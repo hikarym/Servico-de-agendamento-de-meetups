@@ -52,7 +52,7 @@ public class MeetupServiceTest {
                 .registration(registration)
                 .build();
 
-        Mockito.when(meetupRepository.existsByRegistrationAndNotRegistrated(registration)).thenReturn(false);
+//        Mockito.when(meetupRepository.existsByRegistrationAndNotRegistrated(registration)).thenReturn(false);
         Mockito.when(meetupRepository.save(savingMeetup)).thenReturn(savedMeetup);
 
         Meetup meetup = meetupService.save(savingMeetup);
@@ -76,7 +76,7 @@ public class MeetupServiceTest {
                 .meetupDate("10/10/2021")
                 .build();
 
-        Mockito.when(meetupRepository.existsByRegistrationAndNotRegistrated(registration)).thenReturn(true);
+        Mockito.when(meetupRepository.existsByRegistration(registration)).thenReturn(true);
 
         Throwable exception =  catchThrowable(() -> meetupService.save(savingMeetup));
 
