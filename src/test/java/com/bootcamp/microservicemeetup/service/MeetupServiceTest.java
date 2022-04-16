@@ -52,7 +52,7 @@ public class MeetupServiceTest {
                 .registration(registration)
                 .build();
 
-//        Mockito.when(meetupRepository.existsByRegistrationAndNotRegistrated(registration)).thenReturn(false);
+        Mockito.when(meetupRepository.existsByRegistration(registration)).thenReturn(false);
         Mockito.when(meetupRepository.save(savingMeetup)).thenReturn(savedMeetup);
 
         Meetup meetup = meetupService.save(savingMeetup);
