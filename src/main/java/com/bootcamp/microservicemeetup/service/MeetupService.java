@@ -1,7 +1,7 @@
 package com.bootcamp.microservicemeetup.service;
 
-import com.bootcamp.microservicemeetup.model.MeetupDTO;
-import com.bootcamp.microservicemeetup.model.MeetupFilterDTO;
+import com.bootcamp.microservicemeetup.controller.dto.MeetupDTO;
+import com.bootcamp.microservicemeetup.controller.dto.MeetupFilterDTO;
 import com.bootcamp.microservicemeetup.model.entity.Meetup;
 import com.bootcamp.microservicemeetup.model.entity.Registration;
 import org.springframework.data.domain.Page;
