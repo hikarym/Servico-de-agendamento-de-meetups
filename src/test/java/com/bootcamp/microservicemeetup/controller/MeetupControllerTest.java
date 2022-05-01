@@ -1,5 +1,6 @@
 package com.bootcamp.microservicemeetup.controller;
 
+import com.bootcamp.microservicemeetup.controller.resource.MeetupController;
 import com.bootcamp.microservicemeetup.exception.BusinessException;
 import com.bootcamp.microservicemeetup.controller.dto.MeetupDTO;
 import com.bootcamp.microservicemeetup.model.entity.Meetup;
