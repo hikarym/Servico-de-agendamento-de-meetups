@@ -13,6 +13,7 @@ Consiste num pequeno microservice que irá ter lado de client e server no moment
 - Gradle
 - Spring
 - JPA
+- Swagger
 - TDD Test Driven Development
 - Azure functions
 
