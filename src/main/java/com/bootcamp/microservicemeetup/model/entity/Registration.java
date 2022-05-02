@@ -14,7 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table
+@Table(name = "registration")
 public class Registration {
     @Id
     @Column(name = "registration_id")
@@ -32,6 +32,11 @@ public class Registration {
 
     @OneToMany(mappedBy = "registration")
     private List<Meetup> meetups;
+
+//    @ManyToOne
+//    @JoinColumn(name = "id_meetup")
+//    // Muitos registrations para 1 meetup - registro só pode ir em um meetup
+//    private Meetup meetup;
 
 //    @Override
 //    public boolean equals(Object o) {
