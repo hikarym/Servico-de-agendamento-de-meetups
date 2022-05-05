@@ -17,6 +17,10 @@ Consiste num pequeno microservice que irá ter lado de client e server no moment
 - TDD Test Driven Development
 - Azure functions
 
+## Configuração
+No arquivo **build.gradle**, colocar o ID da subscrição no Azure subscription = ID_AZURE_SUBCRIPTION
+
+
 ## 👩‍💻 TODO list
 - [X] Implementação da classe se servico
 - [X] Testes no service
