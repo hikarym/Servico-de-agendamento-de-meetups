@@ -50,7 +50,7 @@ dependencyManagement {
 }
 
 azurewebapp {
-	subscription = '9e456d4f-186d-457d-9976-f7495d105d9e'
+	subscription = <AZURE_SUBSCRIPTION_ID>
 	resourceGroup = 'azure-bootcamp-java-RG'
 	appName = 'agendamentomeetup'
 	pricingTier = 'P1v2'
