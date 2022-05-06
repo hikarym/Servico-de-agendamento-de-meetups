@@ -24,6 +24,10 @@ Segue o diagrama UML do projeto.
 ## Deploy no Azure
 No arquivo **build.gradle**, colocar o ID da subscrição no Azure subscription = ID_AZURE_SUBCRIPTION
 
+Depois de ter colocado o ID da subscrição do AZURE, executar:
+
+    gradle azureWebAppDeploy
+
 [Tutorial para deploy de aplicação gradle no Azure](https://devblogs.microsoft.com/java/gradle-deploy-java-web-apps-to-azure-in-one-step/)
 
 Para consultar a documentação de nossa aplicação gerada pelo swagger:
