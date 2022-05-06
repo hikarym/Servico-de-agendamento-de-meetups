@@ -239,117 +239,133 @@ public class RegistrationControllerTest {
 
     }
 
-//    @Test
-//    @DisplayName("Should update when registration info")
-//    public void updateRegistrationTest() throws Exception {
-//        Integer id = 101;
-//        String json = new ObjectMapper().writeValueAsString(createNewRegistration());
-//        Meetup meetup = createValidMeetup();
-//
-//        Registration updatingRegistration = Registration.builder()
-//                .id(id)
-//                .personName("Mariela Fernandez")
-//                .email("email@gmail.com")
-//                .dateOfRegistration("10/10/2021")
-//                .registered(true)
-//                .meetup(meetup)
-//                .build();
-//
-//        BDDMockito.given(registrationService.getRegistrationById(anyInt()))
-//                .willReturn(Optional.of(updatingRegistration));
-//
-//        Registration updateRegistration =
-//                Registration.builder()
-//                        .id(id)
-//                        .personName("Mariela Fernandez")
-//                        .email("email@gmail.com")
-//                        .dateOfRegistration("10/10/2021")
-//                        .registered(true)
-//                        .meetup(meetup)
-//                        .build();
-//
-//        BDDMockito.given(meetupService.getMeetupById(11)).
-//                willReturn(Optional.of(meetup));
-//
-//        BDDMockito.given(registrationService
-//                .update(updatingRegistration))
-//                .willReturn(updateRegistration);
-//
-//        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-//                .put(REGISTRATION_API.concat("/" + 1))
-//                .contentType(json)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .contentType(MediaType.APPLICATION_JSON);
-//
-//        // verificacao, assert
-//        mockMvc
-//                .perform(requestBuilder)
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("id").value(id))
-//                .andExpect(jsonPath("personName").value(createNewRegistration().getPersonName()))
-//                .andExpect(jsonPath("email").value(createNewRegistration().getEmail()))
-//                .andExpect(jsonPath("dateOfRegistration").value(createNewRegistration().getDateOfRegistration()))
-//                .andExpect(jsonPath("registered").value(createNewRegistration().getRegistered()))
-//                .andExpect(jsonPath("meetup").value(createNewRegistration().getMeetup()));
-//
-//
-//
-//    }
+    @Test
+    @DisplayName("Should update when registration info")
+    public void updateRegistrationTest() throws Exception {
+        Integer registrationId = 11;
+        String json = new ObjectMapper().writeValueAsString(createNewRegistration());
+        Integer meetupId = 11;
+        Meetup meetup = Meetup.builder()
+                .id(meetupId)
+                .event("Womakerscode Dados")
+                .description("descricao")
+                .organizer("organizadora")
+                .meetupDate("10/10/2021")
+                .address("sao paulo")
+                .build();
 
-//    @Test
-//    @DisplayName("Should return 404 when try to update a registration no existent ")
-//    public void updateNonExistentRegistrationTest() throws Exception {
-//        String json = new ObjectMapper().writeValueAsString(createNewRegistration());
-//
-//        BDDMockito.given(registrationService.getRegistrationById(anyInt()))
-//                .willReturn(Optional.empty());
-//
-//        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-//                .get(REGISTRATION_API.concat("/" + 1))
-//                .contentType(json)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .contentType(MediaType.APPLICATION_JSON);
-//
-//        // verificacao, assert
-//        mockMvc
-//                .perform(requestBuilder)
-//                .andExpect(status().isNotFound());
-//    }
-//
-//    @Test
-//    @DisplayName("Should filter  registration ")
-//    public void findRegistrationTest() throws Exception {
-//        Integer id = 11;
-//
-//        Registration registration = Registration.builder()
-//                .id(id)
-//                .personName(createNewRegistration().getPersonName())
-//                .email(createNewRegistration().getEmail())
-//                .dateOfRegistration(createNewRegistration().getDateOfRegistration())
-//                .registered(createNewRegistration().getRegistered())
-////                .meetup(createNewRegistration().getMeetup())
-//                .build();
-//
-//
-//        BDDMockito.given(registrationService.find(Mockito.any(Registration.class), Mockito.any(Pageable.class)))
-//                .willReturn(new PageImpl<Registration>(Arrays.asList(registration), PageRequest.of(0, 100), 1));
-//
-//        String queryString = String.format("?personName=%s&dateOfRegistration=%s&page=0&size=100",
-//                registration.getPersonName(), registration.getDateOfRegistration());
-//
-//        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-//                .get(REGISTRATION_API.concat(queryString))
-//                .accept(MediaType.APPLICATION_JSON);
-//
-//        // verificacao, assert
-//        mockMvc
-//                .perform(requestBuilder)
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("content", Matchers.hasSize(1)))
-//                .andExpect(jsonPath("totalElements").value(1))
-//                .andExpect(jsonPath("pageable.pageSize").value(100))
-//                .andExpect(jsonPath("pageable.pageNumber").value(0));
-//    }
+        BDDMockito.given(meetupService.getMeetupById(meetupId)).
+                willReturn(Optional.of(meetup));
+
+        Registration updatingRegistration = Registration.builder()
+                .id(registrationId)
+                .personName("Juana Fernandez")
+                .email("emailjuana@gmail.com")
+                .dateOfRegistration("10/10/2021")
+                .registered(true)
+                .meetup(meetup)
+                .build();
+
+
+        BDDMockito.given(registrationService.getRegistrationById(registrationId))
+                .willReturn(Optional.of(updatingRegistration));
+
+        Registration updateRegistration = Registration.builder()
+                .id(registrationId)
+                .personName("Mariela Fernandez")
+                .email("email@gmail.com")
+                .dateOfRegistration("10/10/2021")
+                .registered(true)
+                .meetup(meetup)
+                .build();
+
+
+        BDDMockito.given(registrationService
+                .update(updatingRegistration))
+                .willReturn(updateRegistration);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .put(REGISTRATION_API.concat("/" + registrationId))
+                .content(json)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // verificacao, assert
+        mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(registrationId))
+                .andExpect(jsonPath("personName").value(createNewRegistration().getPersonName()))
+                .andExpect(jsonPath("email").value(createNewRegistration().getEmail()))
+                .andExpect(jsonPath("dateOfRegistration").value(createNewRegistration().getDateOfRegistration()))
+                .andExpect(jsonPath("registered").value(createNewRegistration().getRegistered()))
+                .andExpect(jsonPath("meetup").value(createNewRegistration().getMeetup()));
+
+
+
+    }
+
+    @Test
+    @DisplayName("Should return 404 when try to update a registration no existent ")
+    public void updateNonExistentRegistrationTest() throws Exception {
+        String json = new ObjectMapper().writeValueAsString(createNewRegistration());
+
+        BDDMockito.given(registrationService.getRegistrationById(anyInt()))
+                .willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get(REGISTRATION_API.concat("/" + 1))
+                .contentType(json)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // verificacao, assert
+        mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Should filter  registration ")
+    public void findRegistrationTest() throws Exception {
+        Integer id = 11;
+
+        Registration registration = Registration.builder()
+                .id(id)
+                .personName(createNewRegistration().getPersonName())
+                .email(createNewRegistration().getEmail())
+                .dateOfRegistration(createNewRegistration().getDateOfRegistration())
+                .registered(createNewRegistration().getRegistered())
+                .meetup(Meetup.builder()
+                        .id(createNewRegistration().getMeetup().getId())
+                        .event(createNewRegistration().getMeetup().getEvent())
+                        .description(createNewRegistration().getMeetup().getDescription())
+                        .organizer(createNewRegistration().getMeetup().getOrganizer())
+                        .meetupDate(createNewRegistration().getMeetup().getMeetupDate())
+                        .address(createNewRegistration().getMeetup().getAddress())
+                        .build())
+                .build();
+
+
+        BDDMockito.given(registrationService.find(Mockito.any(Registration.class), Mockito.any(Pageable.class)))
+                .willReturn(new PageImpl<>(Arrays.asList(registration), PageRequest.of(0, 100), 1));
+
+        String queryString = String.format("?personName=%s&dateOfRegistration=%s&page=0&size=100",
+                registration.getPersonName(), registration.getDateOfRegistration());
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get(REGISTRATION_API.concat("/find" + queryString))
+                .accept(MediaType.APPLICATION_JSON);
+
+        // verificacao, assert
+        mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("content", Matchers.hasSize(1)))
+                .andExpect(jsonPath("totalElements").value(1))
+                .andExpect(jsonPath("pageable.pageSize").value(100))
+                .andExpect(jsonPath("pageable.pageNumber").value(0));
+    }
 
 
     private RegistrationDTO createNewRegistration() {

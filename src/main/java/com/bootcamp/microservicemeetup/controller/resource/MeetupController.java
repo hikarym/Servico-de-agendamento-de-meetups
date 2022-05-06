@@ -2,6 +2,7 @@ package com.bootcamp.microservicemeetup.controller.resource;
 
 import com.bootcamp.microservicemeetup.controller.dto.MeetupDTO;
 import com.bootcamp.microservicemeetup.controller.dto.MeetupFilterDTO;
+import com.bootcamp.microservicemeetup.controller.dto.RegistrationDTO;
 import com.bootcamp.microservicemeetup.model.entity.Meetup;
 import com.bootcamp.microservicemeetup.service.MeetupService;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +63,16 @@ public class MeetupController {
         List<MeetupDTO> result = meetupService.getAll();
 
         return result;
+    }
+
+    @GetMapping("{meetupId}")
+    @ResponseStatus(HttpStatus.OK)
+    public MeetupDTO getByMeetupId(@PathVariable Integer meetupId) {
+
+        return meetupService
+                .getMeetupById(meetupId)
+                .map(meetup -> modelMapper.map(meetup, MeetupDTO.class))
+                .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "meetup id doesn't exist"));
     }
 
     @DeleteMapping("{meetupId}")

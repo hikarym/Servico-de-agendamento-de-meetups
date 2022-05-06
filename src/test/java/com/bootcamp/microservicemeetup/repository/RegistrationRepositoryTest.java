@@ -28,18 +28,21 @@ public class RegistrationRepositoryTest {
     @Autowired
     RegistrationRepository repository;
 
-//    @Test
-//    @DisplayName("Should return true when exists a registration was already created")
-//    public void returnTrueWhenRegistrationExists(){
-//        String email = "email@gmail.com";
-//        Meetup meetup = Meetup.builder().id(11).build();
-//        Registration registration = createNewRegistration(email);
-//        entityManager.persist(registration);
-//
-//        boolean exists = repository.existsByEmailAndMeetup(email, meetup);
-//
-//        assertThat(exists).isTrue();
-//    }
+    @Test
+    @DisplayName("Should return true when exists a registration was already created")
+    public void returnTrueWhenRegistrationExists(){
+
+        String personName = "Mariela Fernandez";
+        String email = "email@gmail.com";
+        Meetup meetup = createNewMeetup("Womakerscode Dados");
+        entityManager.persist(meetup);
+        Registration registration = createNewRegistration(personName, email, meetup);
+        entityManager.persist(registration);
+
+        boolean exists = repository.existsByEmailAndMeetup(email, meetup);
+
+        assertThat(exists).isTrue();
+    }
 
     @Test
     @DisplayName("Should return false when a registration doesn't exists")
@@ -53,58 +56,63 @@ public class RegistrationRepositoryTest {
 
     }
 
-//    @Test
-//    @DisplayName("Should get a registration by id")
-//    public void findByIdTest(){
-//        Registration registration = createValidRegistration();
-//        entityManager.persist(registration);
-//
-//        Optional<Registration> foundRegistration = repository.findById(registration.getId());
-//
-//        assertThat(foundRegistration.isPresent()).isTrue();
-//
-//    }
-//
-//    @Test
-//    @DisplayName("Should save registration")
-//    public void saveRegistrationTest(){
-//        Registration registration = createNewRegistration("email@gmail.com");
-//
-//        //simular do que persistiu
-//        Registration savedRegistration = repository.save(registration);
-//
-//        assertThat(savedRegistration.getId()).isNotNull();
-//
-//    }
-//
-//    @DisplayName("Should delete a registration from the BD")
-//    public void deleteRegistrationTest(){
-//        Registration registration_Class_attribute = createNewRegistration("323");
-//        entityManager.persist(registration_Class_attribute);
-//
-//        Registration foundRegistration = entityManager.find(Registration.class, registration_Class_attribute.getId());
-//
-//        repository.delete(foundRegistration);
-//
-//        Registration deleteRegistration = entityManager.find(Registration.class, registration_Class_attribute.getId());
-//
-//        assertThat(deleteRegistration).isNull();
-//
-//    }
+    @Test
+    @DisplayName("Should get a registration by id")
+    public void findByIdTest(){
 
-    public Registration createNewRegistration(String email) {
-        Meetup meetup = Meetup.builder()
-                .id(11)
-                .event("Womakerscode Dados")
-                .description("descricao")
-                .organizer("organizadora")
-                .meetupDate("10/10/2021")
-                .address("sao paulo")
-                .build();
+        String personName = "Mariela Fernandez";
+        String email = "email@gmail.com";
+        Meetup meetup = createNewMeetup("Womakerscode Dados");
+        entityManager.persist(meetup);
+        Registration registration = createNewRegistration(personName, email,meetup);
+        entityManager.persist(registration);
+
+        Optional<Registration> foundRegistration = repository.findById(registration.getId());
+
+        assertThat(foundRegistration.isPresent()).isTrue();
+
+    }
+
+    @Test
+    @DisplayName("Should save registration")
+    public void saveRegistrationTest(){
+        String personName = "Mariela Fernandez";
+        String email = "email@gmail.com";
+        Meetup meetup = createNewMeetup("Womakerscode Dados");
+        entityManager.persist(meetup);
+        Registration registration = createNewRegistration(personName, email,meetup);
+
+        //simular do que persistiu
+        Registration savedRegistration = repository.save(registration);
+
+        assertThat(savedRegistration.getId()).isNotNull();
+
+    }
+
+    @Test
+    @DisplayName("Should delete a registration from the BD")
+    public void deleteRegistrationTest(){
+        String personName = "Mariela Fernandez";
+        String email = "email@gmail.com";
+        Meetup meetup = createNewMeetup("Womakerscode Dados");
+        entityManager.persist(meetup);
+        Registration registration = createNewRegistration(personName, email, meetup);
+        entityManager.persist(registration);
+
+        Registration foundRegistration = entityManager.find(Registration.class, registration.getId());
+
+        repository.delete(foundRegistration);
+
+        Registration deleteRegistration = entityManager.find(Registration.class, registration.getId());
+
+        assertThat(deleteRegistration).isNull();
+
+    }
+
+    public Registration createNewRegistration(String personName, String email, Meetup meetup) {
 
         return Registration.builder()
-                .id(101)
-                .personName("Mariela Fernandez")
+                .personName(personName)
                 .email(email)
                 .dateOfRegistration("10/10/2021")
                 .registered(true)
@@ -112,11 +120,21 @@ public class RegistrationRepositoryTest {
                 .build();
     }
 
+    public Meetup createNewMeetup(String event) {
+
+        return Meetup.builder()
+                .event(event)
+                .description("descricao")
+                .organizer("organizadora")
+                .meetupDate("10/10/2021")
+                .address("sao paulo")
+                .build();
+    }
+
     private Registration createValidRegistration() {
         Meetup meetup = createValidMeetup();
 
         return Registration.builder()
-                .id(101)
                 .personName("Mariela Fernandez")
                 .email("email@gmail.com")
                 .dateOfRegistration("10/10/2021")
@@ -129,7 +147,6 @@ public class RegistrationRepositoryTest {
         MeetupDTO meetupDTO = createValidMeetupDTO();
 
         return RegistrationDTO.builder()
-                .id(11)
                 .personName("Mariela Fernandez")
                 .email("email@gmail.com")
                 .dateOfRegistration("10/10/2021")

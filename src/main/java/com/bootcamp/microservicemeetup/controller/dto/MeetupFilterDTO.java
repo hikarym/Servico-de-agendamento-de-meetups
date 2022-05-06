@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MeetupFilterDTO {
 
-//    private Boolean registered;
-
     private String event;
+
+    private String organizer;
 }
