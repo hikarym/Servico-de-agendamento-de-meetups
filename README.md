@@ -42,7 +42,7 @@ A coleção de dados usados para teste no insomnia foi exportado para o arquivo 
 Para visualizar os dados diretamente no banco de dados. Podemos usar o link:
 
 - local: [http://localhost:8080/h2-console/](http://localhost:8080/h2-console/)
- 
+
 
 Painel do gerenciamento do H2:
 
