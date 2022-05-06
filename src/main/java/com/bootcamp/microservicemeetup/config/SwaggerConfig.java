@@ -29,7 +29,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("Meetups API")
                 .description("RestApi de meetup produzida no bootcamp de Java da Womakerscode")
-                .version("1.0")
+                .version("2.0")
                 .contact(contact())
                 .build();
     }

@@ -16,11 +16,15 @@ public class RegistrationDTO {
     private Integer id;
 
     @NotEmpty
-    private String name;
+    private String personName;
+
+    @NotEmpty
+    private String email;
 
     @NotEmpty
     private String dateOfRegistration;
 
-    @NotEmpty
-    private String registration;
+    private Boolean registered;
+
+    private MeetupDTO meetup;
 }

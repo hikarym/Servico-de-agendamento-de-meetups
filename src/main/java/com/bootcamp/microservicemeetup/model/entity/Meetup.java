@@ -6,12 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
 @Entity
 @Table(name = "meetup")
 public class Meetup {
@@ -23,17 +24,20 @@ public class Meetup {
     @Column
     private String event;
 
-    @JoinColumn(name = "id_registration")
-    @ManyToOne
-    // Muitos meetups para 1 registro - registro só pode ir em um meetup
-    private Registration registration;
+    @Column
+    private String description;
 
     @Column
+    private String organizer;
+
+    @Column(name = "meetup_date")
     private String meetupDate;
 
     @Column
-    private Boolean registered;
+    private String address;
 
-//    @OneToMany(mappedBy = "meetup")
-//    private List<Registration> registrations;
+    @OneToMany(mappedBy = "meetup")
+    private List<Registration> registrations;
+
+
 }

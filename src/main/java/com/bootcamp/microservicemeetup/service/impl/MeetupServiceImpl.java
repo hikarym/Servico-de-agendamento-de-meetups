@@ -7,10 +7,13 @@ import com.bootcamp.microservicemeetup.model.entity.Meetup;
 import com.bootcamp.microservicemeetup.model.entity.Registration;
 import com.bootcamp.microservicemeetup.repository.MeetupRepository;
 import com.bootcamp.microservicemeetup.service.MeetupService;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,25 +29,33 @@ public class MeetupServiceImpl implements MeetupService {
 
     @Override
     public Meetup save(Meetup meetup) {
-        if (repository.existsByRegistration(meetup.getRegistration())) {
-            throw new BusinessException("Meetup already enrolled");
-        }
+//        if (repository.existsById(meetup.getId())) {
+//            throw new BusinessException("Meetup already created!");
+//        }
         return repository.save(meetup);
     }
 
     @Override
-    public Optional<Meetup> getById(Integer id) {
+    public Optional<Meetup> getMeetupById(Integer id) {
         return repository.findById(id);
     }
 
     @Override
-    public Meetup update(Meetup loan) {
-        return repository.save(loan);
+    public Meetup update(Meetup meetup) {
+        return repository.save(meetup);
     }
 
     @Override
-    public Page<Meetup> find(MeetupFilterDTO filterDTO, Pageable pageable) {
-        return repository.findByRegistrationOnMeetup( filterDTO.getRegistration(), filterDTO.getEvent(), pageable );
+    public Page<Meetup> find(Meetup filter, Pageable pageable) {
+
+//        return repository.find( filter.getRegistered(), filter.getEvent(), pageable );
+        Example<Meetup>  example = Example.of(filter,
+                ExampleMatcher
+                        .matching()
+                        .withIgnoreCase()
+                        .withIgnoreNullValues()
+                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING));
+        return repository.findAll(example,pageable);
     }
 
     @Override
@@ -53,9 +64,11 @@ public class MeetupServiceImpl implements MeetupService {
         return repository.findAll().stream().map((meetup) -> {
             MeetupDTO dto = MeetupDTO.builder()
                     .id(meetup.getId())
-//                    .registrationAttribute(meetup.getEvent())
-//                    .registration(meetup.getRegistration())
                     .event(meetup.getEvent())
+                    .description(meetup.getDescription())
+                    .organizer(meetup.getOrganizer())
+                    .meetupDate(meetup.getMeetupDate())
+                    .address(meetup.getAddress())
                     .build();
 
             return dto;
@@ -65,7 +78,13 @@ public class MeetupServiceImpl implements MeetupService {
     }
 
     @Override
-    public Page<Meetup> getRegistrationsByMeetup(Registration registration, Pageable pageable) {
-        return repository.findByRegistration(registration, pageable);
+    public void delete(Meetup meetup) {
+        if (meetup == null || meetup.getId() == null) {
+            throw new IllegalArgumentException("MeetupId cant not be null");
+        }
+
+        this.repository.delete(meetup);
     }
+
+
 }

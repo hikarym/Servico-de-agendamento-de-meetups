@@ -22,21 +22,21 @@ public class Registration {
     private Integer id;
 
     @Column(name = "person_name")
-    private String name;
+    private String personName;
+
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "date_of_registration")
     private String dateOfRegistration;
 
     @Column
-    private String registration;
+    private Boolean registered;
 
-    @OneToMany(mappedBy = "registration")
-    private List<Meetup> meetups;
-
-//    @ManyToOne
-//    @JoinColumn(name = "id_meetup")
-//    // Muitos registrations para 1 meetup - registro só pode ir em um meetup
-//    private Meetup meetup;
+    @ManyToOne
+    @JoinColumn(name = "id_meetup")
+    // Muitos registrations para 1 meetup - registro só pode ir em um meetup
+    private Meetup meetup;
 
 //    @Override
 //    public boolean equals(Object o) {

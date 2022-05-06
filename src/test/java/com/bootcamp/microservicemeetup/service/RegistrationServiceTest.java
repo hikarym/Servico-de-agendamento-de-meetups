@@ -1,6 +1,9 @@
 package com.bootcamp.microservicemeetup.service;
 
+import com.bootcamp.microservicemeetup.controller.dto.MeetupDTO;
+import com.bootcamp.microservicemeetup.controller.dto.RegistrationDTO;
 import com.bootcamp.microservicemeetup.exception.BusinessException;
+import com.bootcamp.microservicemeetup.model.entity.Meetup;
 import com.bootcamp.microservicemeetup.model.entity.Registration;
 import com.bootcamp.microservicemeetup.repository.RegistrationRepository;
 import com.bootcamp.microservicemeetup.service.impl.RegistrationServiceImpl;
@@ -42,21 +45,24 @@ public class RegistrationServiceTest {
 
     @Test
     @DisplayName("Should save a registration")
-    public void saveStudent() {
+    public void saveRegistration() {
 
         // cenario
+        Meetup meetup = createValidMeetup();
         Registration registration= createValidRegistration();
 
         // execucao
-        Mockito.when(repository.existsByRegistration(Mockito.anyString())).thenReturn(false);
+        Mockito.when(repository.existsByEmailAndMeetup(Mockito.anyString(), Mockito.any())).thenReturn(false);
         Mockito.when(repository.save(registration)).thenReturn(createValidRegistration());
 
         Registration savedRegistration = registrationService.save(registration);
         // assert
         assertThat(savedRegistration.getId()).isEqualTo(101);
-        assertThat(savedRegistration.getName()).isEqualTo("Mariela Fernandez");
+        assertThat(savedRegistration.getPersonName()).isEqualTo("Mariela Fernandez");
+        assertThat(savedRegistration.getEmail()).isEqualTo("email@gmail.com");
         assertThat(savedRegistration.getDateOfRegistration()).isEqualTo("01/04/2022");
-        assertThat(savedRegistration.getRegistration()).isEqualTo("001");
+        assertThat(savedRegistration.getRegistered()).isEqualTo(true);
+        assertThat(savedRegistration.getMeetup()).isEqualTo(meetup);
 
     }
 
@@ -65,7 +71,7 @@ public class RegistrationServiceTest {
     public void shouldNotSaveAsRegistrationDuplicated() {
 
         Registration registration = createValidRegistration();
-        Mockito.when(repository.existsByRegistration(Mockito.any())).thenReturn(true);
+        Mockito.when(repository.existsByEmailAndMeetup(Mockito.anyString(), Mockito.any())).thenReturn(true);
 
         Throwable exception = Assertions.catchThrowable(() -> registrationService.save(registration));
         assertThat(exception)
@@ -92,9 +98,11 @@ public class RegistrationServiceTest {
         //assert
         assertThat(foundRegistration.isPresent()).isTrue();
         assertThat(foundRegistration.get().getId()).isEqualTo(id);
-        assertThat(foundRegistration.get().getName()).isEqualTo(registration.getName());
+        assertThat(foundRegistration.get().getPersonName()).isEqualTo(registration.getPersonName());
+        assertThat(foundRegistration.get().getEmail()).isEqualTo(registration.getEmail());
         assertThat(foundRegistration.get().getDateOfRegistration()).isEqualTo(registration.getDateOfRegistration());
-        assertThat(foundRegistration.get().getRegistration()).isEqualTo(registration.getRegistration());
+        assertThat(foundRegistration.get().getRegistered()).isEqualTo(registration.getRegistered());
+        assertThat(foundRegistration.get().getMeetup()).isEqualTo(registration.getMeetup());
     }
 
     @Test
@@ -114,7 +122,7 @@ public class RegistrationServiceTest {
     }
 
     @Test
-    @DisplayName("Should delete a student")
+    @DisplayName("Should delete a Registration")
     public void deleteRegistrationTest() {
 
         // cenario. simulando o cenário de erro
@@ -126,7 +134,6 @@ public class RegistrationServiceTest {
         // caso de retornar vazio
         Mockito.verify(repository, Mockito.times(1)).delete(registration);
 
-        // verify whether registration was deleted
     }
 
     @Test
@@ -159,11 +166,12 @@ public class RegistrationServiceTest {
         Registration registration = registrationService.update(updatingRegistration);
 
         // assert
-        // assertThat(registration).isEqualTo(updatedRegistration);
         assertThat(registration.getId()).isEqualTo(updatedRegistration.getId());
-        assertThat(registration.getName()).isEqualTo(updatedRegistration.getName());
+        assertThat(registration.getPersonName()).isEqualTo(updatedRegistration.getPersonName());
+        assertThat(registration.getEmail()).isEqualTo(updatedRegistration.getEmail());
         assertThat(registration.getDateOfRegistration()).isEqualTo(updatedRegistration.getDateOfRegistration());
-        assertThat(registration.getRegistration()).isEqualTo(updatedRegistration.getRegistration());
+        assertThat(registration.getRegistered()).isEqualTo(updatedRegistration.getRegistered());
+        assertThat(registration.getMeetup()).isEqualTo(updatedRegistration.getMeetup());
 
     }
 
@@ -190,31 +198,74 @@ public class RegistrationServiceTest {
         assertThat(result.getPageable().getPageSize()).isEqualTo(10);
     }
 
+
     @Test
-    @DisplayName("Should get a registration model by registration attribute")
-    public void getRegistrationByRegistration() {
+    @DisplayName("Should get a registration model by registration id")
+    public void getRegistrationByRegistrationId() {
 
         // scenario: simulando o cenário de erro
-        String registrationAttribute = "1234";
+        String email = "email@gmail.com";
+        Meetup meetup = Meetup.builder().id(101).build();
+        Integer id = 11;
 
         // caso de retornar vazio
-        Mockito.when(repository.findByRegistration(registrationAttribute))
-                .thenReturn(Optional.of(Registration.builder().id(11).registration(registrationAttribute).build()));
+        Mockito.when(repository.findById(id))
+                .thenReturn(Optional.of(Registration.builder().id(11).email(email).meetup(meetup).build()));
 
-        Optional<Registration> registration = registrationService.getRegistrationByRegistrationAttribute(registrationAttribute);
+        Optional<Registration> registration = registrationService.getRegistrationById(id);
 
         // assert
         assertThat(registration.isPresent()).isTrue();
         assertThat(registration.get().getId()).isEqualTo(11);
-        assertThat(registration.get().getRegistration()).isEqualTo(registrationAttribute);
+        assertThat(registration.get().getEmail()).isEqualTo(email);
+        assertThat(registration.get().getMeetup()).isEqualTo(meetup);
     }
 
     private Registration createValidRegistration() {
+        Meetup meetup = createValidMeetup();
+
         return Registration.builder()
                 .id(101)
-                .name("Mariela Fernandez")
+                .personName("Mariela Fernandez")
+                .email("email@gmail.com")
                 .dateOfRegistration("01/04/2022")
-                .registration("001")
+                .registered(true)
+                .meetup(meetup)
+                .build();
+    }
+
+    private RegistrationDTO createValidRegistrationDTO() {
+        MeetupDTO meetupDTO = createValidMeetupDTO();
+
+        return RegistrationDTO.builder()
+                .id(101)
+                .personName("Mariela Fernandez")
+                .email("email@gmail.com")
+                .dateOfRegistration("01/04/2022")
+                .registered(true)
+                .meetup(meetupDTO)
+                .build();
+    }
+
+    private Meetup createValidMeetup() {
+        return Meetup.builder()
+                .id(101)
+                .event("Womakerscode Dados")
+                .description("descricao")
+                .organizer("organizadora")
+                .meetupDate("10/10/2021")
+                .address("sao paulo")
+                .build();
+    }
+
+    private MeetupDTO createValidMeetupDTO() {
+        return MeetupDTO.builder()
+                .id(101)
+                .event("Womakerscode Dados")
+                .description("descricao")
+                .organizer("organizadora")
+                .meetupDate("10/10/2021")
+                .address("sao paulo")
                 .build();
     }
 }
